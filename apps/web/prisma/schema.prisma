@@ -1,0 +1,56 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum ArticleStatus {
+  DRAFT
+  PUBLISHED
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Article {
+  id            String        @id @default(uuid())
+  slug          String        @unique
+  title         String
+  excerpt       String
+  metaDesc      String
+  keywords      String[]
+  contentHtml   String
+  schemaJsonLd  Json
+  status        ArticleStatus @default(DRAFT)
+  publishedAt   DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model PipelineEvent {
+  id         String   @id @default(uuid())
+  entityType String
+  entityId   String
+  step       String
+  status     String
+  errorCode  String?
+  errorDetail String?
+  latencyMs  Int?
+  createdAt  DateTime @default(now())
+
+  @@index([entityType, entityId, createdAt])
+}
