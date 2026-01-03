@@ -46,6 +46,11 @@ Prima di rilanciare uno step:
 
 ## Vercel Cron (runner)
 
+## Deploy Vercel (monorepo)
+
+Questo repo è un monorepo: la Next.js app vive in `apps/web`.
+Su Vercel devi impostare **Project Settings → Root Directory = `apps/web`** (non via `vercel.json`, perché `rootDirectory` non è supportata nello schema).
+
 Endpoint canonico:
 
 - `POST /api/cron/run`
